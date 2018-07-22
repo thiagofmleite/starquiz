@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { People } from './people/people';
-import { PeopleService } from './people/people.service';
 import { FilmService } from './film/film.service';
 import { config } from 'src/app/core/app.config';
 import { SpecieService } from './specie/specie.service';
 import { getFilmsFromPeople, getSpeciesFromPeople, getPlanetFromPeople, urlsReplaced, getVehiclesFromPeople } from './helpers';
 import { PlanetService } from './planet/planet.service';
-import { Vehicle } from './vehicle/vehicle';
 import { VehicleService } from './vehicle/vehicle.service';
+import { ActivatedRoute } from '@angular/router';
+import { PeopleResponse } from './people/people-response';
 
 @Component({
     selector: 'app-people-list',
@@ -16,23 +16,21 @@ import { VehicleService } from './vehicle/vehicle.service';
 export class PeopleListComponent implements OnInit {
     people: People;
     peoples: People[] = [];
+    page: number = 1;
+    response: PeopleResponse;
 
     constructor(
-        private peopleService: PeopleService,
         private filmService: FilmService,
         private specieService: SpecieService,
         private planetService: PlanetService,
         private vehicleService: VehicleService,
+        private activatedRoute: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
-        this.peopleService.getPeople()
-            .subscribe(
-                response => {
-                    this.peoples = response.results;
-                },
-                error => console.log(error)
-            );
+        this.page = this.activatedRoute.snapshot.params.userName || 1;
+        this.response = this.activatedRoute.snapshot.data['response'];
+        this.peoples = this.response.results;
     }
 
     getPeopleInfo(people: People) {
@@ -58,4 +56,5 @@ export class PeopleListComponent implements OnInit {
         urlsReplaced(config.VEHICLE_RULE, ...people.vehicles)
             && getVehiclesFromPeople(people, this.vehicleService);
     }
+
 }

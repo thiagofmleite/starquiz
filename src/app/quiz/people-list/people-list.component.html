@@ -1,8 +1,14 @@
 <div class="container">
+    <p class="text-center text-muted" *ngIf="!peoples.length">
+        Sorry, no data
+    </p>
+    <app-people-modal [people]="people"></app-people-modal>
     <div class="row">
         <div class="col-md-4 col-12" *ngFor="let people of peoples; let i=index">
             <app-people [people]="people" (peopleInfo)="getPeopleInfo($event)"></app-people>
         </div>
     </div>
-    <app-people-modal [people]="people"></app-people-modal>
+    <div class="row">
+        <app-pagination [previous]="response?.previous" [next]="response?.next"></app-pagination>
+    </div>
 </div>
