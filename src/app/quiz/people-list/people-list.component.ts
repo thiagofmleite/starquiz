@@ -4,8 +4,10 @@ import { PeopleService } from './people/people.service';
 import { FilmService } from './film/film.service';
 import { config } from 'src/app/core/app.config';
 import { SpecieService } from './specie/specie.service';
-import { getFilmsFromPeople, getSpeciesFromPeople, getPlanetFromPeople } from './helpers';
+import { getFilmsFromPeople, getSpeciesFromPeople, getPlanetFromPeople, urlsReplaced, getVehiclesFromPeople } from './helpers';
 import { PlanetService } from './planet/planet.service';
+import { Vehicle } from './vehicle/vehicle';
+import { VehicleService } from './vehicle/vehicle.service';
 
 @Component({
     selector: 'app-people-list',
@@ -20,6 +22,7 @@ export class PeopleListComponent implements OnInit {
         private filmService: FilmService,
         private specieService: SpecieService,
         private planetService: PlanetService,
+        private vehicleService: VehicleService,
     ) { }
 
     ngOnInit(): void {
@@ -31,31 +34,28 @@ export class PeopleListComponent implements OnInit {
                 error => console.log(error)
             );
     }
-    
+
     getPeopleInfo(people: People) {
-        console.log(people);
         this.people = people;
         try {
-            this.urlsReplaced(people.films, config.FILM_RULE)
-            && getFilmsFromPeople(people, this.filmService);
-            
-            this.urlsReplaced(people.species, config.SPECIE_RULE)
-            && getSpeciesFromPeople(people, this.specieService);
-            
-            this.urlsReplaced([people.homeworld], config.PLANET_RULE)
-            && getPlanetFromPeople(people, this.planetService);
-
+            this.retriveData(people);
         } catch (error) {
             console.log(error.message);
         }
 
     }
 
-    private urlsReplaced(urls: string[], rule: RegExp): boolean {
-        return urls.some(url => rule.test(url));
+    private retriveData(people: People): void {
+        urlsReplaced(config.FILM_RULE, ...people.films)
+            && getFilmsFromPeople(people, this.filmService);
+
+        urlsReplaced(config.SPECIE_RULE, ...people.species)
+            && getSpeciesFromPeople(people, this.specieService);
+
+        urlsReplaced(config.PLANET_RULE, people.homeworld)
+            && getPlanetFromPeople(people, this.planetService);
+
+        urlsReplaced(config.VEHICLE_RULE, ...people.vehicles)
+            && getVehiclesFromPeople(people, this.vehicleService);
     }
-
-    
-
-
 }

@@ -9,18 +9,23 @@
             </div>
             <div class="modal-body" *ngIf="people">
                 <div class="row">
-                    <div class="col-4">imagem</div>
-                    <div class="col-8">
-                        <app-detail-item title="Specie" [value]="listSpecies() || 'Loading species'"></app-detail-item>
-                        <app-detail-item title="Height" [value]="people.height.toString()"></app-detail-item>
-                        <app-detail-item title="Hair" [value]="people.hair_color"></app-detail-item>
-                        <app-detail-item title="Planet" [value]="getPlanet() || 'Loading Homeworld'"></app-detail-item>
+                    <div class="col-md-6 col-12">imagem</div>
+                    <div class="col-md-6 col-12">
+                        <div class="list-group">
+                            <app-detail-item title="Specie" [value]="listSpecies() || 'Loading species'"></app-detail-item>
+                            <app-detail-item title="Height" [value]="people.height.toString()"></app-detail-item>
+                            <app-detail-item title="Hair" [value]="people.hair_color | titlecase"></app-detail-item>
+                            <app-detail-item title="Planet" [value]="getPlanet() || 'Loading Homeworld'"></app-detail-item>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <p>
-                        Films: {{ listFilms() || 'Loading films' }}
-                    </p>
+                    <div class="col-12">
+                        <div class="mx-1 list-group">
+                            <app-detail-item title="Films" [value]="listFilms() || 'Loading films'"></app-detail-item>
+                            <app-detail-item title="Vehicles" [value]="listVehicles() || 'Loading vehicles'"></app-detail-item>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

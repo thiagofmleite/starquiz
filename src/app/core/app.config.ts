@@ -4,5 +4,5 @@ export const config = {
     SPECIE_RULE: /^https:\/\/swapi.co\/api\/species\/\d+\/$/,
     PLANET_RULE: /^https:\/\/swapi.co\/api\/planets\/\d+\/$/,
     STARSHIP_RULE: /^https:\/\/swapi.co\/api\/starships\/\d+\/$/,
-    VEHICLES_RULE: /^https:\/\/swapi.co\/api\/vehicles\/\d+\/$/,
+    VEHICLE_RULE: /^https:\/\/swapi.co\/api\/vehicles\/\d+\/$/,
 }
