@@ -1,0 +1,28 @@
+<div class="modal fade" id="peopleModal" tabindex="-1" role="dialog" aria-labelledby="peopleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="peopleModalLabel">Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="people">
+                <div class="row">
+                    <div class="col-4">imagem</div>
+                    <div class="col-8">
+                        <app-detail-item title="Specie" [value]="'todo'"></app-detail-item>
+                        <app-detail-item title="Height" [value]="people.height.toString()"></app-detail-item>
+                        <app-detail-item title="Hair" [value]="people.hair_color"></app-detail-item>
+                        <app-detail-item title="Planet" [value]="'todo'"></app-detail-item>
+                    </div>
+                </div>
+                <div class="row">
+                    <p>
+                        Films: {{ listFilms() || 'Loading films' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
