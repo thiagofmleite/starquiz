@@ -1,18 +1,17 @@
 import { Injectable } from "@angular/core";
+import { config } from "src/app/core/app.config";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Film } from "./film";
-import { config } from "src/app/core/app.config";
-
+import { Specie } from "./specie";
 @Injectable({ providedIn: 'root' })
-export class FilmService {
+export class SpecieService {
     constructor(private http: HttpClient) { }
 
-    getFromApi(api: string): Observable<Film> {
-        const rule = config.FILM_RULE;
+    getFromApi(api: string): Observable<Specie> {
+        const rule = config.SPECIE_RULE;
         if (!rule.test(api)) {
             throw new Error('Invalid API Url!');
         }
-        return this.http.get<Film>(api);
+        return this.http.get<Specie>(api);
     }
 }

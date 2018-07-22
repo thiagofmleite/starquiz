@@ -7,12 +7,26 @@ import { People } from '../people/people';
 })
 export class PeopleModalComponent implements OnInit {
     @Input() people: People;
-    
+
     constructor() { }
 
     ngOnInit(): void { }
 
+    getPlanet(): string {
+        return this.people.homeworld;
+    }
+
     listFilms(): string {
-        return this.people.films.map(film => film).join(', ');
+        return this.transmuteList(this.people.films);
+    }
+
+    listSpecies(): string {
+        return this.transmuteList(this.people.species);
+    }
+
+
+
+    private transmuteList(list: string[], separator: string = ', '): string {
+        return list.map(item => item).join(separator);
     }
 }

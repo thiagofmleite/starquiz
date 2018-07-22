@@ -11,10 +11,10 @@
                 <div class="row">
                     <div class="col-4">imagem</div>
                     <div class="col-8">
-                        <app-detail-item title="Specie" [value]="'todo'"></app-detail-item>
+                        <app-detail-item title="Specie" [value]="listSpecies() || 'Loading species'"></app-detail-item>
                         <app-detail-item title="Height" [value]="people.height.toString()"></app-detail-item>
                         <app-detail-item title="Hair" [value]="people.hair_color"></app-detail-item>
-                        <app-detail-item title="Planet" [value]="'todo'"></app-detail-item>
+                        <app-detail-item title="Planet" [value]="getPlanet() || 'Loading Homeworld'"></app-detail-item>
                     </div>
                 </div>
                 <div class="row">
