@@ -9,7 +9,8 @@ export class PeopleListResolver implements Resolve<Observable<PeopleResponse>> {
     constructor(private service: PeopleService) { }
 
     resolve(router: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PeopleResponse> {
-        const page = router.params.page || 1;
+        const page = router.params.page;
+        console.log(router.params.page);
         return this.service.getPeople(page);
     }
 }

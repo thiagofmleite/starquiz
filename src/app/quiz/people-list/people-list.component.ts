@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { People } from './people/people';
 import { FilmService } from './film/film.service';
 import { config } from 'src/app/core/app.config';
@@ -8,29 +8,48 @@ import { PlanetService } from './planet/planet.service';
 import { VehicleService } from './vehicle/vehicle.service';
 import { ActivatedRoute } from '@angular/router';
 import { PeopleResponse } from './people/people-response';
+import { ImageService } from './image/image.service';
+import { PeopleService } from './people/people.service';
 
 @Component({
     selector: 'app-people-list',
     templateUrl: './people-list.component.html',
 })
-export class PeopleListComponent implements OnInit {
+export class PeopleListComponent implements OnInit, OnChanges {
     people: People;
     peoples: People[] = [];
     page: number = 1;
     response: PeopleResponse;
+    images: string[] = [];
 
     constructor(
+        private service: PeopleService,
         private filmService: FilmService,
         private specieService: SpecieService,
         private planetService: PlanetService,
         private vehicleService: VehicleService,
+        private imageService: ImageService,
         private activatedRoute: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
-        this.page = this.activatedRoute.snapshot.params.userName || 1;
-        this.response = this.activatedRoute.snapshot.data['response'];
-        this.peoples = this.response.results;
+        this.activatedRoute.params.subscribe(val => {
+            this.page = this.activatedRoute.snapshot.params['page'];
+            this.service.getPeople(this.page)
+                .subscribe(response => {
+                    this.response = response;
+                    this.peoples = this.response.results;
+                    this.getImages(this.peoples);
+                }, err => console.log(err));
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes);
+        if (changes.page) {
+            console.log(this.response.results);
+        }
+
     }
 
     getPeopleInfo(people: People) {
@@ -55,6 +74,25 @@ export class PeopleListComponent implements OnInit {
 
         urlsReplaced(config.VEHICLE_RULE, ...people.vehicles)
             && getVehiclesFromPeople(people, this.vehicleService);
+    }
+
+    private getImages(peoples: People[]) {
+        const requests$ = peoples.map(people => this.imageService.getImages(encodeURI(people.name.toLowerCase())));
+        this.images = [];
+        requests$.map(req => req.subscribe(
+            response => {
+                console.info('RESPONSE ABAIXO');
+                console.log(response);
+            },
+            error => {
+                console.info('DEU RUIM');
+                console.log(error);
+            }
+        ));
+    }
+
+    getImageFor(people: People): string {
+        return this.images[people.name];
     }
 
 }

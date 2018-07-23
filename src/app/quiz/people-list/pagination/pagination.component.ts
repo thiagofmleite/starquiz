@@ -18,5 +18,6 @@ export class PaginationComponent implements OnInit {
         if(direction) {
             return direction.replace(rule, '');
         }
+        return;
     }
 }

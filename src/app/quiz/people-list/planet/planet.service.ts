@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { config } from "src/app/core/app.config";
+import { DetailService } from "src/app/core/services/detail-service";
 import { Planet } from "./planet";
 
 @Injectable({ providedIn: 'root' })
-export class PlanetService {
+export class PlanetService implements DetailService<Planet> {
     constructor(private http: HttpClient) { }
 
     getFromApi(api: string): Observable<Planet> {

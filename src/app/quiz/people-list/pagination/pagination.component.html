@@ -1,10 +1,10 @@
 <nav aria-label="Pagination">
     <ul class="pagination justify-content-center">
         <li class="page-item" [ngClass]="{'disabled': !previous}">
-            <a class="page-link" [routerLink]="['', page(previous)]">Previous</a>
+            <a class="page-link" [routerLink]="['/quiz', page(previous)]">Previous</a>
         </li>
-        <li class="page-item">
-            <a class="page-link" [routerLink]="['', page(next)]" [ngClass]="{'disabled': !next}">Next</a>
+        <li class="page-item" *ngIf="page(next)">
+            <a class="page-link" [routerLink]="['/quiz', page(next)]" [ngClass]="{'disabled': !page(next)}">Next</a>
         </li>
     </ul>
 </nav>

@@ -3,9 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Film } from "./film";
 import { config } from "src/app/core/app.config";
+import { DetailService } from "src/app/core/services/detail-service";
 
 @Injectable({ providedIn: 'root' })
-export class FilmService {
+export class FilmService implements DetailService<Film> {
     constructor(private http: HttpClient) { }
 
     getFromApi(api: string): Observable<Film> {

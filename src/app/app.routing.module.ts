@@ -6,17 +6,16 @@ import { PeopleListResolver } from './quiz/people-list/people-list.resolver';
 const routes: Routes = [
     {
         path: '',
-        component: PeopleListComponent,
-        resolve: {
-            response: PeopleListResolver
-        }
+        pathMatch: 'full',
+        redirectTo: 'quiz'
     },
     {
-        path: ':page',
+        path: 'quiz',
         component: PeopleListComponent,
-        resolve: {
-            response: PeopleListResolver
-        }
+    },
+    {
+        path: 'quiz/:page',
+        component: PeopleListComponent,
     }
 ]
 
