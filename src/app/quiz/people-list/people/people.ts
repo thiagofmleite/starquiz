@@ -1,4 +1,5 @@
 export interface People {
+    image: string;
     name: string;
     height: number;
     mass: number;

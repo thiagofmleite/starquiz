@@ -1,7 +1,5 @@
 <div class="card mb-4 box-shadow">
-    <img *ngIf="image" class="card-img-top" alt="Thumbnail [100%x225]"
-        [src]="image"
-        data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+    <img *ngIf="people.image" class="card-img-top" alt="Guess who" [src]="people.image">
     <div class="card-body">
         <p class="card-text">{{ people.name }}</p>
         <app-people-form></app-people-form>

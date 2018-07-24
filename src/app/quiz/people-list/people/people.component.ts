@@ -9,7 +9,6 @@ const thumbnail = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22348%22%2
 })
 export class PeopleComponent implements OnInit {
     @Input() people: People;
-    @Input() image: string = thumbnail;
     @Output() peopleInfo = new EventEmitter<People>();
     constructor() { }
 

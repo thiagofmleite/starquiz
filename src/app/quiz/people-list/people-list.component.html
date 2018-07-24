@@ -5,7 +5,7 @@
     <app-people-modal [people]="people"></app-people-modal>
     <div class="row">
         <div class="col-md-4 col-12" *ngFor="let people of peoples; let i=index">
-            <app-people [image]="getImageFor(people)" [people]="people" (peopleInfo)="getPeopleInfo($event)"></app-people>
+            <app-people [people]="people" (peopleInfo)="getPeopleInfo($event)"></app-people>
         </div>
     </div>
     <div class="row" *ngIf="peoples.length">

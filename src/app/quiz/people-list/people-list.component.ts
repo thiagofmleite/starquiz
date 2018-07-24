@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PeopleResponse } from './people/people-response';
 import { ImageService } from './image/image.service';
 import { PeopleService } from './people/people.service';
+import { getImages } from 'src/app/quiz/people-list/helpers/get-image';
 
 @Component({
     selector: 'app-people-list',
@@ -20,7 +21,6 @@ export class PeopleListComponent implements OnInit, OnChanges {
     peoples: People[] = [];
     page: number = 1;
     response: PeopleResponse;
-    images: string[] = [];
 
     constructor(
         private service: PeopleService,
@@ -39,7 +39,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
                 .subscribe(response => {
                     this.response = response;
                     this.peoples = this.response.results;
-                    this.getImages(this.peoples);
+                    getImages(this.peoples, this.imageService);
                 }, err => console.log(err));
         });
     }
@@ -75,24 +75,4 @@ export class PeopleListComponent implements OnInit, OnChanges {
         urlsReplaced(config.VEHICLE_RULE, ...people.vehicles)
             && getVehiclesFromPeople(people, this.vehicleService);
     }
-
-    private getImages(peoples: People[]) {
-        const requests$ = peoples.map(people => this.imageService.getImages(encodeURI(people.name.toLowerCase())));
-        this.images = [];
-        requests$.map(req => req.subscribe(
-            response => {
-                console.info('RESPONSE ABAIXO');
-                console.log(response);
-            },
-            error => {
-                console.info('DEU RUIM');
-                console.log(error);
-            }
-        ));
-    }
-
-    getImageFor(people: People): string {
-        return this.images[people.name];
-    }
-
 }
