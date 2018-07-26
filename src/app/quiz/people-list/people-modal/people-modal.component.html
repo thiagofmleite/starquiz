@@ -23,10 +23,9 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-
                         <div class="mx-1 list-group">
-                            <app-detail-item title="Films" [value]="listFilms() || 'Loading films'"></app-detail-item>
-                            <app-detail-item title="Vehicles" [value]="listVehicles() || 'Loading vehicles'"></app-detail-item>
+                            <app-detail-item *ngIf="people?.films.length" title="Films" [value]="listFilms() || 'Loading films'"></app-detail-item>
+                            <app-detail-item *ngIf="people?.vehicles?.length" title="Vehicles" [value]="listVehicles() || 'Loading vehicles'"></app-detail-item>
                         </div>
                     </div>
                 </div>
