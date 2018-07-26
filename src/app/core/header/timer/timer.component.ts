@@ -13,7 +13,7 @@ export class TimerComponent implements OnInit {
     ngOnInit(): void {
         const quiz = this.quizService.getQuiz();
         const finish = new Date(quiz.finish).getTime();
-        let intervalId = window.setInterval(() => {
+        const intervalId = window.setInterval(() => {
             const diff = (finish - new Date().getTime()) / 1000;
             if (diff < 0) {
                 window.clearInterval(intervalId);
@@ -24,15 +24,15 @@ export class TimerComponent implements OnInit {
     }
 
     getSeconds(time: number): string {
-        if(time < 0){ 
+        if (time < 0) {
             return '00';
         }
         const seconds = (time % 60);
         return (seconds < 10) ? `0${seconds.toFixed(0)}` : seconds.toFixed(0);
     }
-    
+
     getMinutes(time: number): string {
-        if(time < 0){ 
+        if (time < 0) {
             return '00';
         }
         const minutes = Math.floor(time / 60);
