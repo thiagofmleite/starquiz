@@ -3,7 +3,7 @@ import { People } from './people/people';
 import { FilmService } from './film/film.service';
 import { config } from 'src/app/core/app.config';
 import { SpecieService } from './specie/specie.service';
-import { getFilmsFromPeople, getSpeciesFromPeople, getPlanetFromPeople, urlsReplaced, getVehiclesFromPeople } from './helpers';
+import { getFilmsFromPeople, getSpeciesFromPeople, getPlanetFromPeople, urlsReplaced, getVehiclesFromPeople, calculateScore } from './helpers';
 import { PlanetService } from './planet/planet.service';
 import { VehicleService } from './vehicle/vehicle.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,9 +11,9 @@ import { PeopleResponse } from './people/people-response';
 import { ImageService } from './image/image.service';
 import { PeopleService } from './people/people.service';
 import { getImages } from 'src/app/quiz/people-list/helpers/get-image';
-import { Answer } from '../survey/answer';
-import { Survey } from '../survey/survey';
-import { SurveyService } from '../survey/helpers/survey.service';
+import { Answer } from '../answer';
+import { Quiz } from '../quiz';
+import { QuizService } from '../quiz.service';
 
 @Component({
     selector: 'app-people-list',
@@ -24,7 +24,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
     peoples: People[] = [];
     page: number = 1;
     response: PeopleResponse;
-    survey: Survey;
+    quiz: Quiz;
 
     constructor(
         private service: PeopleService,
@@ -33,13 +33,13 @@ export class PeopleListComponent implements OnInit, OnChanges {
         private planetService: PlanetService,
         private vehicleService: VehicleService,
         private imageService: ImageService,
-        private surveyService: SurveyService,
+        private quizService: QuizService,
         private activatedRoute: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(val => {
-            this.survey = this.surveyService.getSurvey();
+            this.quiz = this.quizService.getQuiz();
             this.page = this.activatedRoute.snapshot.params['page'];
             this.service.getPeople(this.page)
                 .subscribe(response => {
@@ -70,7 +70,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
 
     receiveAnswer(answer: Answer) {
         if (!this.isAnswerAnswered(answer)) {
-            this.survey.answers.push(answer);
+            this.quiz.answers.push(answer);
         } else {
             if (!this.isAlreadyCorrect(answer)) {
                 this.overwriteAnswer(answer);
@@ -107,11 +107,11 @@ export class PeopleListComponent implements OnInit, OnChanges {
 
 
     private getAnswer(answer: Answer): Answer {
-        return this.survey.answers.find(a => a.people.name === answer.people.name);
+        return this.quiz.answers.find(a => a.people.name === answer.people.name);
     }
     
     private overwriteAnswer(answer): void {
-        this.survey.answers.map(a => {
+        this.quiz.answers.map(a => {
             if(a.people.name === answer.people.name) {
                 a = answer;
             }
@@ -120,10 +120,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
     }
 
     private setScore() {
-        const corrects = this.survey.answers
-            .filter(correct => correct.isCorrect)
-            .map(hint => hint.useHint);
-        this.survey.score = corrects.reduce((a, b) => b ? a + 5 : a + 10, 0);
-        this.surveyService.setSurvey(this.survey);
+        this.quiz.score = calculateScore(this.quiz);
+        this.quizService.setQuiz(this.quiz);
     }
 }

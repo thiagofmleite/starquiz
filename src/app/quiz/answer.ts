@@ -1,4 +1,4 @@
-import { People } from "../people-list/people/people";
+import { People } from "./people-list/people/people";
 
 export class Answer {
     guessName: string;

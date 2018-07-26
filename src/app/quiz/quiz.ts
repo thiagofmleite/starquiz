@@ -1,6 +1,6 @@
 import { Answer } from "./answer";
 
-export class Survey {
+export class Quiz {
     sessionId: string;
     answers: Answer[];
     score: number;
@@ -12,5 +12,6 @@ export class Survey {
         this.answers = [];
         this.score = 0;
         this.start = new Date(Date.now());
+        this.finish = new Date(this.start.getTime() + 2 * 60000);
     }
 }

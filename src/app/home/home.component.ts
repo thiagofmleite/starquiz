@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { createSessionId } from '../core/helpers/create-session-id';
-import { Survey } from '../quiz/survey/survey';
-import { SurveyService } from '../quiz/survey/helpers/survey.service';
+import { Quiz } from '../quiz/quiz';
+import { QuizService } from '../quiz/quiz.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
     templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-    constructor(private surveyService: SurveyService, private router: Router) { }
+    constructor(private quizService: QuizService, private router: Router) { }
 
     ngOnInit(): void { }
 
     newGame() {
         const sessionId = createSessionId();
-        const survey = new Survey(sessionId);
-        this.surveyService.setSurvey(survey);
+        const quiz = new Quiz(sessionId);
+        this.quizService.setQuiz(quiz);
         this.router.navigate(['quiz']);
     }
 }

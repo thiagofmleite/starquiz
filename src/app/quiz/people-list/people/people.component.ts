@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { People } from './people';
-import { Answer } from '../../survey/answer';
+import { Answer } from '../../answer';
 
 
 @Component({

@@ -7,23 +7,11 @@
         <a class="navbar-brand" [routerLink]="['']">StarQuiz</a>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" [routerLink]="['/leaderboard']">Ranking</a>
                 </li>
             </ul>
         </div>
-        <div class="timer-container mt-2 mt-md-0">
-            <div class="text-white">
-                00:00
-            </div>
-        </div>
+        <app-timer *ngIf="hasQuiz()"></app-timer>
     </nav>
 </header>
