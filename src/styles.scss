@@ -2,3 +2,12 @@ body {
     padding-top: 60px;
 }
   
+.guess-who {
+    &--img {
+        background-position: 50% 10%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 250px;
+    }
+}

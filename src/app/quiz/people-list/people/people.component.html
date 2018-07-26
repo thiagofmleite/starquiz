@@ -1,13 +1,16 @@
-<div class="card mb-4 box-shadow">
-    <img *ngIf="people.image" class="card-img-top" alt="Guess who" [src]="people.image">
+<div class="card mb-4 box-shadow guess-who">
+    <div class="guess-who--img" alt="Guess who am I?" [ngStyle]="{'background-image': 'url(' + people.image || noimage + ')'}"></div>
     <div class="card-body">
-        <p class="card-text">{{ people.name }}</p>
-        <app-people-form (peopleName)="receivePeopleName($event)"></app-people-form>
+        <div class="text-center">
+        </div>    
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">?</button>
-                <button (click)="useHint()" type="button" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#peopleModal">… </button>
+                <button (click)="guess()" title="Guess who is" type="button" class="btn btn-sm btn-outline-secondary">?</button>
+                <button (click)="useHint()" title="Use a hint" type="button" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#peopleModal">… </button>
             </div>
+        </div>
+        <div *ngIf="giveAGuess" class="mt-1">
+            <app-people-form (peopleName)="receivePeopleName($event)"></app-people-form>
         </div>
     </div>
 </div>

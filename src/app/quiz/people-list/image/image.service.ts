@@ -9,18 +9,44 @@ import { GoogleResponse } from "./google-response";
 export class ImageService {
     constructor(private http: HttpClient) { }
 
-    // getImages(q: string): Observable<any> {
-    //     const params = new HttpParams()
-    //         .append('count', '50')
-    //         .append('autoCorrect', 'false')
-    //         .append('q', q);
-    //     let headers = new HttpHeaders();
-    //     headers.append('X-Mashape-Key', config.MASHAPE_KEY)
-    //     headers.append('X-Mashape-Host', config.MASHAPE_HOST);
-    //     return this.http.get<any>(config.IMAGE_API, { headers: headers, params: params })
-    // }
-
     getImageFromGoogle(query: string): Promise<ImageSearch> {
+        return new Promise((resolve, reject) => {
+            const images = this.getStoredImages();
+            const hasImage = images.find(image => image.query == query);
+            if (hasImage) {
+                resolve(hasImage);
+            } else {
+                this.getImageFromGoogleAPI(query)
+                .then(image => {
+                        this.addImage(image);
+                        resolve(image);
+                    })
+                    .catch(error => reject(error));
+            }
+        });
+    }
+
+    private addImage(newImage: ImageSearch): void {
+        let images = this.getStoredImages();
+        if (images.length > 0 && images.find(image => image.query === newImage.query)) {
+            images.map(image => {
+                if (image.query === newImage.query) {
+                    image = newImage;
+                }
+                return image
+            });
+        } else {
+            images.push(newImage)
+        }
+        window.sessionStorage.setItem('images', JSON.stringify(images));
+    }
+
+    getStoredImages(): ImageSearch[] {
+        const images = JSON.parse(window.sessionStorage.getItem('images')) as ImageSearch[] || [];
+        return images;
+    }
+
+    private getImageFromGoogleAPI(query: string): Promise<ImageSearch> {
         return new Promise((resolve, reject) => {
             const params = new HttpParams()
                 .append('q', `star wars ${query}`)
@@ -35,21 +61,5 @@ export class ImageService {
         });
     }
 
-    getImageFromPixabay(query: string): Promise<ImageSearch> {
-        return new Promise((resolve, reject) => {
-            const params = new HttpParams()
-                .append('key', config.PIXABAY_KEY)
-                .append('q', query);
-            this.http.get<PixabayResponse>(config.PIXABAY_API, { params })
-                .subscribe(response => {
-                    if (response.totalHits > 0) {
-                        const image = response.hits[0];
-                        const result = { query: query, url: image.largeImageURL } as ImageSearch;
-                        resolve(result);
-                    } else {
-                        resolve(null);
-                    }
-                }, error => reject(error));
-        });
-    }
+
 }

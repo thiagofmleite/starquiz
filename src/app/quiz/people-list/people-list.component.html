@@ -4,7 +4,7 @@
     </p>
     <app-people-modal [people]="people"></app-people-modal>
     <div class="row">
-        <div class="col-md-4 col-12" *ngFor="let people of peoples; let i=index">
+        <div class="col-md-3 col-12" *ngFor="let people of peoples; let i=index">
             <app-people [people]="people" (peopleInfo)="getPeopleInfo($event)" (onAnswer)="receiveAnswer($event)"></app-people>
         </div>
     </div>

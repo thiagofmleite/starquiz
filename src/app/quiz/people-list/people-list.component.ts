@@ -77,7 +77,6 @@ export class PeopleListComponent implements OnInit, OnChanges {
             }
         }
         this.setScore();
-        this.surveyService.setSurvey(this.survey);
     }
 
     private retriveData(people: People): void {
@@ -116,6 +115,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
             if(a.people.name === answer.people.name) {
                 a = answer;
             }
+            return a;
         });
     }
 
@@ -123,7 +123,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
         const corrects = this.survey.answers
             .filter(correct => correct.isCorrect)
             .map(hint => hint.useHint);
-        const score = corrects.reduce((a, b) => b ? a + 5 : a + 10, 0);
-        console.log(score);
+        this.survey.score = corrects.reduce((a, b) => b ? a + 5 : a + 10, 0);
+        this.surveyService.setSurvey(this.survey);
     }
 }

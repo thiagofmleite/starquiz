@@ -9,6 +9,7 @@ import { config } from 'src/app/core/app.config';
 })
 export class PeopleModalComponent implements OnInit {
     @Input() people: People;
+    noimage = 'assets/images/no-image.png';
 
     constructor() { }
 
