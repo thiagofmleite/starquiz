@@ -2,11 +2,11 @@
     <img *ngIf="people.image" class="card-img-top" alt="Guess who" [src]="people.image">
     <div class="card-body">
         <p class="card-text">{{ people.name }}</p>
-        <app-people-form></app-people-form>
+        <app-people-form (peopleName)="receivePeopleName($event)"></app-people-form>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-secondary">?</button>
-                <button (click)="peopleInfo.emit(people)" type="button" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#peopleModal">… </button>
+                <button (click)="useHint()" type="button" class="btn btn-sm btn-outline-secondary"  data-toggle="modal" data-target="#peopleModal">… </button>
             </div>
         </div>
     </div>

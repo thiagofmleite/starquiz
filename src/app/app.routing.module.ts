@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PeopleListComponent } from './quiz/people-list/people-list.component';
 import { PeopleListResolver } from './quiz/people-list/people-list.resolver';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
     {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'quiz'
+        component: HomeComponent
     },
     {
         path: 'quiz',

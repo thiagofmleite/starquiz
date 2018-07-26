@@ -11,6 +11,9 @@ import { PeopleResponse } from './people/people-response';
 import { ImageService } from './image/image.service';
 import { PeopleService } from './people/people.service';
 import { getImages } from 'src/app/quiz/people-list/helpers/get-image';
+import { Answer } from '../survey/answer';
+import { Survey } from '../survey/survey';
+import { SurveyService } from '../survey/helpers/survey.service';
 
 @Component({
     selector: 'app-people-list',
@@ -21,6 +24,7 @@ export class PeopleListComponent implements OnInit, OnChanges {
     peoples: People[] = [];
     page: number = 1;
     response: PeopleResponse;
+    survey: Survey;
 
     constructor(
         private service: PeopleService,
@@ -29,11 +33,13 @@ export class PeopleListComponent implements OnInit, OnChanges {
         private planetService: PlanetService,
         private vehicleService: VehicleService,
         private imageService: ImageService,
+        private surveyService: SurveyService,
         private activatedRoute: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(val => {
+            this.survey = this.surveyService.getSurvey();
             this.page = this.activatedRoute.snapshot.params['page'];
             this.service.getPeople(this.page)
                 .subscribe(response => {
@@ -62,6 +68,18 @@ export class PeopleListComponent implements OnInit, OnChanges {
 
     }
 
+    receiveAnswer(answer: Answer) {
+        if (!this.isAnswerAnswered(answer)) {
+            this.survey.answers.push(answer);
+        } else {
+            if (!this.isAlreadyCorrect(answer)) {
+                this.overwriteAnswer(answer);
+            }
+        }
+        this.setScore();
+        this.surveyService.setSurvey(this.survey);
+    }
+
     private retriveData(people: People): void {
         urlsReplaced(config.FILM_RULE, ...people.films)
             && getFilmsFromPeople(people, this.filmService);
@@ -74,5 +92,38 @@ export class PeopleListComponent implements OnInit, OnChanges {
 
         urlsReplaced(config.VEHICLE_RULE, ...people.vehicles)
             && getVehiclesFromPeople(people, this.vehicleService);
+    }
+
+    private isAnswerAnswered(answer: Answer): boolean {
+        if (this.getAnswer(answer)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private isAlreadyCorrect(answer: Answer): boolean {
+        return this.getAnswer(answer).isCorrect;
+    }
+
+
+    private getAnswer(answer: Answer): Answer {
+        return this.survey.answers.find(a => a.people.name === answer.people.name);
+    }
+    
+    private overwriteAnswer(answer): void {
+        this.survey.answers.map(a => {
+            if(a.people.name === answer.people.name) {
+                a = answer;
+            }
+        });
+    }
+
+    private setScore() {
+        const corrects = this.survey.answers
+            .filter(correct => correct.isCorrect)
+            .map(hint => hint.useHint);
+        const score = corrects.reduce((a, b) => b ? a + 5 : a + 10, 0);
+        console.log(score);
     }
 }

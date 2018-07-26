@@ -1,6 +1,6 @@
-<form class="form-inline">
+<form [formGroup]="guessForm" (submit)="submit()" class="form-inline">
     <div class="form-group mx-sm-2 mb-2">
-        <input type="text" class="form-control" placeholder="Guess who?">
+        <input type="text" formControlName="name" class="form-control" placeholder="Guess who?">
     </div>
-    <button type="submit" class="btn btn-primary mb-2">Send answer</button>
+    <button [disabled]="guessForm.invalid" type="submit" class="btn btn-primary mb-2">Ok</button>
 </form>
