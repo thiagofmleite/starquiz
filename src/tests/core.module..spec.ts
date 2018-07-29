@@ -30,7 +30,7 @@ describe('Core Module', () => {
         }));
         it('should return 00 when 60 seconds is passed', async(() => {
             const fixture = TestBed.createComponent(TimerComponent);
-            expect(fixture.componentInstance.getSeconds(60)).toBe('00');
+            expect(fixture.componentInstance.getSeconds(60000)).toBe('00');
         }));
         it('should return 00 when negative seconds is passed', async(() => {
             const fixture = TestBed.createComponent(TimerComponent);
@@ -39,6 +39,18 @@ describe('Core Module', () => {
         it('should return when negative minutes is passed', async(() => {
             const fixture = TestBed.createComponent(TimerComponent);
             expect(fixture.componentInstance.getMinutes(-1)).toBe('00');
+        }));
+        it('should return 1:59', async(() => {
+            const fixture = TestBed.createComponent(TimerComponent);
+            expect(fixture.componentInstance.getTimer(119000)).toBe('01:59');
+        }));
+        it('should return 1:30', async(() => {
+            const fixture = TestBed.createComponent(TimerComponent);
+            expect(fixture.componentInstance.getTimer(90000)).toBe('01:30');
+        }));
+        it('should return 00:59', async(() => {
+            const fixture = TestBed.createComponent(TimerComponent);
+            expect(fixture.componentInstance.getTimer(59000)).toBe('00:59');
         }));
     });
 

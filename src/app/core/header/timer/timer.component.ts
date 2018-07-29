@@ -14,12 +14,12 @@ export class TimerComponent implements OnInit {
         const quiz = this.quizService.getQuiz();
         const finish = new Date(quiz.finish).getTime();
         const intervalId = window.setInterval(() => {
-            const diff = (finish - new Date().getTime()) / 1000;
+            const diff = finish - new Date().getTime();
             if (diff < 0) {
                 window.clearInterval(intervalId);
                 this.router.navigate(['finish']);
             }
-            this.timer = `${this.getMinutes(diff)}:${this.getSeconds(diff)}`;
+            this.timer = this.getTimer(diff);
         }, 1000);
     }
 
@@ -27,7 +27,7 @@ export class TimerComponent implements OnInit {
         if (time < 0) {
             return '00';
         }
-        const seconds = (time % 60);
+        const seconds = ((time / 1000) % 60);
         return (seconds < 10) ? `0${seconds.toFixed(0)}` : seconds.toFixed(0);
     }
 
@@ -35,8 +35,13 @@ export class TimerComponent implements OnInit {
         if (time < 0) {
             return '00';
         }
-        const minutes = Math.floor(time / 60);
+        const minutes = Math.floor((time / 1000) / 60);
         return (minutes < 10) ? `0${minutes.toFixed(0)}` : minutes.toFixed(0);
+    }
+
+    getTimer(time: number): string {
+        console.log(time);
+        return `${this.getMinutes(time)}:${this.getSeconds(time)}`;
     }
 
 }
